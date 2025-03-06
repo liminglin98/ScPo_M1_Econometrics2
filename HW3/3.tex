@@ -1,0 +1,140 @@
+\documentclass[12pt]{article}
+\usepackage[utf8]{inputenc}
+\usepackage{setspace}
+\usepackage[letterpaper]{geometry}
+\usepackage{times}
+\usepackage{graphicx}
+\usepackage{amsfonts}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{graphicx}
+\usepackage{float}
+\usepackage{tabularx}
+\geometry{top=1.0in, bottom=1.0in, left=1.0in, right=1.0in}
+\setlength\parindent{24pt}
+\begin{document}
+\begin{flushleft}
+Liming Lin\\
+Professor Moshe Buchinsky\\
+Econometrics II\\
+Problem Set 2\\
+Feb. 24th, 2025\\
+
+\section*{Part II --- Theory}
+\subsection*{Question 2}
+Below is an equation to explain the salaries of CEOs in terms of annual firm sales $sales$, return on equity $roe$ (in percent form) and return on stock $ros$ (in percent form). $u$ is the error term.
+\[
+log(salary)=\beta_0+\beta_1log(sales)+\beta_2roe+\beta_3ros+u
+\]
+The OLS estimation results are reported below.
+\[
+log(\hat{salary})=\underset{(0.320)}{4.32}+\underset{(0.035)}{0.280}log(sales)+\underset{(0.0041)}{0.174}roe+\underset{0.00054}{0.00024}ros
+\]
+where $N=209$, $R^2=.283$
+\begin{enumerate}
+    \item By what percent is salary predicted to increase, if $ros$ increases by 50 points?
+    $0.00024*50*100\%=1.2\%$\\
+    The salary is predicted to increase by 1.2\% if $ros$ increases by 50 percentage points.\\
+    \item By what percent is salary predicted to increase if sales increase by 1 percent?
+    $0.280*1\%=0.28\%$\\
+    The salary is predicted to increase by 0.28\% if sales increase by 1 percent.\\
+    \item Test the null hypothesis that $ros$ has no effect on salary, against the alternative that $ros$ has a positive effect. The critical value at the 10 percent significance level is 1.282.
+    For an one-sided test we have:
+    \[H_0=\beta_3=0\]
+    \[H_1=\beta_3>0\]
+    And Thus, the t-statistic is:
+    \[t=\frac{\hat{\beta_3}-\beta_{H_0}}{SE_{\beta_3}}=\frac{0.00024-0}{0.00054}\approx 0.4444\]
+    Since $0.4444<1.282$, we fail to reject the null hypothesis that $ros$ has no effect on salary at the 10 percent significance level.\\
+    \item Would you include $ros$ in a final model explaining CEO compensation in terms of firm performance? Explain.\\
+    No, I would not include $ros$ in the final model as in the previous question we already showed that it has no effect on the salary, hence dropping it does not affect the model's explanatory power.\\
+\end{enumerate}
+\subsection*{Question 3}
+Let $\theta=(\beta,\sigma)$ with $\beta,\sigma\in\mathbb{R}^+$. Consider the mapping $f(\theta)=\gamma=(b,s)$ such that
+\begin{align*}
+    b&=\beta/\sigma\\
+    s&=1/\sigma
+\end{align*}
+Let $\hat{\gamma}=(\hat{b},\hat{s})$ be an estimator of $\gamma$ that is consistent and asymptotically normal,
+\[
+\sqrt{N}(\hat{\gamma}-\gamma)\xrightarrow{d}N(0,\Sigma)
+\]
+with
+\[
+\Sigma=\begin{bmatrix}
+    \sigma_1^2 & \omega\\
+    \omega & \sigma_2^2
+\end{bmatrix}
+\]
+Define an estimator $\hat{\theta}$ of $\theta$, consistent and asymptotically normal, and calculate its asymptotic variance.\\
+We define $\theta=f^{-1}(\gamma)=g(\gamma)$.\\
+With the Delta Method, we have:
+\[
+\sqrt{n}(\hat{\theta}-\theta)\xrightarrow{d}N(0,Var(\hat{\theta}))
+\]
+where
+\[
+Var(\hat{\theta})=\frac{1}{n}J(\gamma)\Sigma J(\gamma)^T
+\] 
+We first rewrite $\sigma$ and $\beta$ and define $g(b,s)$ in terms of $b$ and $s$ as follows:
+\begin{align*}
+    g_1:\beta&=b/s\\
+    g_2:\sigma&=1/s
+\end{align*}
+Then we calculate the Jacobian matrix of $J(\gamma)$:
+\[
+J(\gamma)
+=\begin{bmatrix}
+    \frac{\partial(g_1)}{\partial b} & \frac{\partial (g_1)}{\partial s}\\
+    \frac{\partial(g_2)}{\partial b} & \frac{\partial (g_2)}{\partial s}
+\end{bmatrix}
+=\begin{bmatrix}
+    1/s & -b/s^2\\
+    0 & -1/s^2
+\end{bmatrix}
+\]
+Then we plug $J(\gamma)$ into the Delta Method formula:
+\begin{align*}
+Var(\hat{\theta})&=\frac{1}{n}J(\gamma)\Sigma J(\gamma)^T\\
+&=\frac{1}{n}\begin{bmatrix}
+    1/s & -b/s^2\\
+    0 & -1/s^2
+\end{bmatrix}
+\begin{bmatrix}
+    \sigma_1^2 & \omega\\
+    \omega & \sigma_2^2
+\end{bmatrix}
+\begin{bmatrix}
+    1/s & 0\\
+    -b/s^2 & -1/s^2
+\end{bmatrix}\\
+\end{align*}
+We then replace $b$ and $s$ with $\beta$ and $\sigma$ respectively to get:
+\begin{align*}
+ Var(\hat{\theta})&=\frac{1}{n}\begin{bmatrix}
+    \sigma & -\beta\sigma\\
+    0 & -\sigma^2
+\end{bmatrix}
+\begin{bmatrix}
+    \sigma_1^2 & \omega\\
+    \omega & \sigma_2^2
+\end{bmatrix}
+\begin{bmatrix}
+    \sigma & 0\\
+    -\beta\sigma & -\sigma^2
+\end{bmatrix}   
+&=\frac{1}{n}\begin{bmatrix}
+    \sigma\sigma_1^2-\beta\sigma\omega & -\beta\sigma\sigma_2^2\\
+    -\sigma^2\omega & \sigma^2\sigma_2^2
+\end{bmatrix}
+\begin{bmatrix}
+    \sigma & 0\\
+    -\beta\sigma & -\sigma^2
+\end{bmatrix}\\
+&=\frac{1}{n}\begin{bmatrix}
+    \sigma^2\sigma_1^2-\beta^2\sigma^2\sigma_2^2-2\beta\sigma^2\omega & -\beta\sigma^3\sigma_2^2-\sigma^3\omega\\
+    \beta\sigma^3\sigma_2^2+\sigma^3\omega & \sigma^4\sigma_2^2
+\end{bmatrix}
+\end{align*}
+
+\end{flushleft}
+\end{document}
