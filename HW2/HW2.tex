@@ -1,0 +1,321 @@
+\documentclass[12pt]{article}
+\usepackage[utf8]{inputenc}
+\usepackage{setspace}
+\usepackage[letterpaper]{geometry}
+\usepackage{times}
+\usepackage{graphicx}
+\usepackage{amsfonts}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{graphicx}
+\usepackage{float}
+\usepackage{tabularx}
+\geometry{top=1.0in, bottom=1.0in, left=1.0in, right=1.0in}
+\setlength\parindent{24pt}
+\begin{document}
+\begin{flushleft}
+
+Liming Lin\\
+Professor Moshe Buchinsky\\
+Econometrics II\\
+Problem Set 2\\
+Feb. 13th, 2025\\
+
+\section*{Part II --- Theory}
+\subsection*{Question 2}
+Consider the simple linear regression model $y_i=a+bx_i+u_i$, for $i=1,...N$, with iid observation and with $\mathbb{E}(u_i|x_i)=0$ and homoskedastic errors, i.e., $\mathbb{E}(u_i^2|x_i)=\sigma^2$.We denote $\textbf{x}=(x_1,...,x_N)'$ which is then a $N \times 1$ vector. Assume that $x_i>0$ for all $i$ and let $z_i=ln(x_i)$. Let $z=(z_1,...,z_N)'$  Finally, let $\textbf{y}=(y_1,...,y_N), X=(\textbf{e},\textbf{x}\in \mathbb{R}^{N \times 2})$ and $Z=(\textbf{e},\textbf{z}\in \mathbb{R}^{N \times 2} )$
+\begin{enumerate}
+    \item Write the normal equations for the least-squares problem and the formulas for the OLS estimator $\hat{\beta}=\begin{pmatrix} \hat{a}\\\hat{b} \end{pmatrix}$ of this simple regression model.\\
+    The OLS estimator \(\hat{\beta} = (\hat{a},\hat{b})'\) in the regression is obtained by minimizing the sum of squared residuals 
+    \(\sum_{i=1}^N (y_i - a - b\,x_i)^2\).  Thus, the \emph{normal equations} can be written in summation form as:
+    \[
+\begin{cases}
+\displaystyle 
+\sum_{i=1}^N \bigl[y_i - \hat{a} - \hat{b}\,x_i\bigr] \;=\; 0,\\[6pt]
+\displaystyle 
+\sum_{i=1}^N x_i\,\bigl[y_i - \hat{a} - \hat{b}\,x_i\bigr] \;=\; 0.
+\end{cases}
+    \]
+From standard simple linear regression theory, the slope and intercept estimators are:
+\[
+\hat{b} 
+= 
+\frac{\sum_{i=1}^N (x_i - \bar{x})(y_i - \bar{y})}
+     {\sum_{i=1}^N (x_i - \bar{x})^2},
+\quad
+\hat{a} = \bar{y} - \hat{b}\,\bar{x},
+\]
+where \(\bar{x} = \frac{1}{N}\sum_{i=1}^N x_i\) and \(\bar{y} = \frac{1}{N}\sum_{i=1}^N y_i\).
+
+    \item We define the following estimator as
+    \[
+    \tilde{\beta}=\begin{pmatrix} \tilde{a} \\ \tilde{b} \end{pmatrix}=(Z'X)^{-1}Z'Y
+    \]
+    \begin{enumerate}
+        \item What is the system of two equations that $\tilde{\beta}$ solves?\\
+        We can rewrite the equation as
+        \[
+        (Z'X)\begin{pmatrix} \tilde{a} \\ \tilde{b} \end{pmatrix}=Z'Y
+        \]
+        which can be expanded as
+        \[
+        \begin{pmatrix} \sum_{i=1}^N 1 & \sum_{i=1}^N x_i \\ \sum_{i=1}^N z_i & \sum_{i=1}^N z_i x_i \end{pmatrix}\begin{pmatrix} \tilde{a} \\ \tilde{b} \end{pmatrix}=\begin{pmatrix} \sum_{i=1}^N y_i \\ \sum_{i=1}^N y_iz_i \end{pmatrix}
+        \]
+        So the system of two equations that $\tilde{\beta}$ solves is
+        \[
+        \begin{cases}
+        \displaystyle
+        \sum_{i=1}^N \tilde{a} + \sum_{i=1}^N \tilde{b}x_i = \sum_{i=1}^N y_i,\\[6pt]
+        \displaystyle
+        \sum_{i=1}^N z_i\tilde{a} + \sum_{i=1}^N z_i\tilde{b}x_i = \sum_{i=1}^N y_iz_i.
+        \end{cases}
+        \]
+
+        \item Derive the value for $\tilde{b}$.\\
+        From the first equation, we have
+        \[
+        \tilde{a}N+\tilde{b}\sum_{i=1}^N x_i=\sum_{i=1}^N y_i
+        \]
+        Then we can solve for $\tilde{a}$ by dividing the equation by $N$
+        \[
+        \tilde{a}=\bar{y}-\tilde{b}\bar{x}
+        \]
+        Substituting $\tilde{a}$ into the second equation, we have
+        \[
+        \sum_{i=1}^N z_i(\bar{y}-\tilde{b}\bar{x})+\tilde{b}\sum_{i=1}^N z_ix_i=\sum_{i=1}^N y_iz_i
+        \]
+        By expanding the equation, we have
+        \[
+        \bar{y}\sum_{i=1}^N z_i-\tilde{b}\bar{x}\sum_{i=1}^N z_i+\tilde{b}\sum_{i=1}^N z_ix_i=\sum_{i=1}^N y_iz_i
+        \]
+        Then we isolate $\tilde{b}$ in the equation
+        \[
+        \tilde{b}\left(\sum_{i=1}^N z_ix_i-\bar{z}\sum_{i=1}^N x_i\right)=\sum_{i=1}^Ny_iz_i-\bar{y}\sum_{i=1}^N z_i
+        \]
+        which can be simplified as
+        \[
+        \tilde{b}=\frac{\sum_{i=1}^N(z_i-\bar{z})(y_i-\bar{y})}{\sum_{i=1}^N(z_i-\bar{z})(x_i-\bar{x})}
+        \]
+        \item Verify that $\tilde{b}$ is an unbiased estimator of $b$.\\
+        We have the linear model
+\[
+y = X\beta+u=X \begin{pmatrix} a \\ b \end{pmatrix} + u,
+\]
+and the estimator
+\[
+\tilde{\beta} 
+\;=\; 
+\begin{pmatrix}
+\tilde{a}\\[6pt]
+\tilde{b}
+\end{pmatrix}
+\;=\;
+(Z' X)^{-1} Z' y.
+\]
+Substitute \(y = X\beta + u\) into \(\tilde{\beta}\):
+\[
+\tilde{\beta}
+\;=\;
+(Z' X)^{-1} Z' (X \beta + u)
+\;=\;
+(Z' X)^{-1} \bigl(Z' X \beta + Z' u\bigr)
+\;=\;
+\beta + (Z' X)^{-1} Z' u.
+\]
+Taking expectations (conditional on \(X\), or treating \(X\) as nonrandom), and using 
+\(\mathbb{E}[u \mid X] = 0\),
+\[
+\mathbb{E}[\tilde{\beta} \mid X]
+\;=\;
+\beta 
+\;+\;
+(Z' X)^{-1} Z' \underbrace{\mathbb{E}[u \mid X]}_{=0}
+\;=\;
+\beta.
+\]
+Hence \(\mathbb{E}[\tilde{\beta}] = \beta\).  In particular, the second component of \(\tilde{\beta}\) satisfies
+\(\mathbb{E}[\tilde{b}] = b\). Thus, \(\tilde{b}\) is an unbiased estimator of \(b\).
+    \end{enumerate}
+    \item Calculate $\mathbb{V}(\hat{b}) $ and $\mathbb{V}(\tilde{b})$.
+    Using the formula for variance of OLS estimator, we have
+    \[
+    \mathbb{V}(\hat{b})=\sigma^2(X'X)^{-1}
+    \]
+    Expanding the $(X'X)$ we have
+    \[
+    X'X=\begin{pmatrix} N & \sum_{i=1}^N x_i \\ \sum_{i=1}^N x_i & \sum_{i=1}^N x_i^2 \end{pmatrix}
+    \]
+    Then we can calculate $(X'X)^{-1}$ as
+    \[
+    (X'X)^{-1}=\frac{1}{N\sum_{i=1}^N x_i^2-\left(\sum_{i=1}^N x_i\right)^2}\begin{pmatrix} \sum_{i=1}^N x_i^2 & -\sum_{i=1}^N x_i \\ -\sum_{i=1}^N x_i & N \end{pmatrix}
+    \]
+    The $(2,2)$ element of the matrix corresponds the variance of $\hat{b}$, so we have
+    \[
+    \frac{N}{N\sum_{i=1}^N x_i^2-\left(\sum_{i=1}^N x_i\right)^2}= \frac{1}{\sum_{i=1}^N(x_i-\bar{x})^2}
+    \]
+    Substitue into the original equation, we have
+    \[
+    \mathbb{V}(\hat{b})=\frac{\sigma^2}{\sum_{i=1}^N(x_i-\bar{x})^2}=\frac{\sigma^2}{V(x)}
+    \]
+    From the equation for $\tilde{b}$, we plug in the formula for  $y_i$ and $\bar{y}$
+    \begin{align*}
+        \tilde{b}&=\frac{\sum_{i=1}^N(z_i-\bar{z})(y_i-\bar{y})}{\sum_{i=1}^N(z_i-\bar{z})(x_i-\bar{x})}\\ 
+        &=\frac{\sum_{i=1}^n(b(x_i-\bar{x})+u_i)(z_i-\bar{z})}{\sum_{i=1}^n(x_i-\bar{x})(z_i-\bar{z})}
+        &=b\frac{\sum_{i=1}^n(x_i-\bar{x})(z_i-\bar{z})}{\sum_{i=1}^n(x_i-\bar{x})(z_i-\bar{z})}+\frac{\sum_{i=1}^n(z_i-\bar{z})u_i}{\sum_{i=1}^n(x_i-\bar{x})(z_i-\bar{z})}\\
+    \end{align*}
+   Then we can calculate the variance of $\tilde{b}$ as
+    \[
+    \mathbb{V}(\tilde{b})=\frac{\sum_{i=1}^n(z_i-\bar{z})^2V(u_i)}{\sum_{i=1}^n(x_i-\bar{x})(z_i-\bar{z})}=\frac{\sum_{i=1}^n(z_i-\bar{z})^2\sigma^2}{\sum_{i=1}^n(x_i-\bar{x})(z_i-\bar{z})^2}=\frac{\sigma^2}{Cov(x_i,z_i)^2}
+    \]
+    \item Show that $\mathbb{V}(\hat{b}) \leq \mathbb{V}(\tilde{b})$.\\
+    \textit{Hint}: Use the Cauchy-Schwarz inequality: $(\sum_{i=1}^N(z_i-\bar{z})(x_i-\bar{x}))^{2}\leq \sum_{i=1}^N(z_i-\bar{z})^2\sum_{i=1}^N(x_i-\bar{x})^2$\\
+    We can rewrite the Cauchy-Schwarz inequality as
+    \[
+    Cov(x_i,z_i)^2\leq V(x)V(z)
+    \]
+    \[
+    \frac{1}{V(x)}\leq \frac{V(z)}{Cov(x_i,z_i)^2}
+    \]
+    By multiplying boths sides by $\sigma^2$, we have
+    \[
+    \frac{\sigma^2}{V(x)}\leq \frac{\sigma^2V(z)}{Cov(x_i,z_i)^2}
+    \]
+    The left hand side of the equation is $\mathbb{V}(\hat{b})$ and the right hand side is $\mathbb{V}(\tilde{b})$, so we have
+    \[
+    \mathbb{V}(\hat{b})\leq \mathbb{V}(\tilde{b})
+    \]
+\end{enumerate}
+\subsection*{Question 3}
+Consider a linear regression model with one constant regressors and one additional regressor $w_i(i.e.,K=2)$:
+\[
+y_i=\beta_1+w_i\beta_2+u_i,i=1,...,N
+\]
+Let $\hat{\beta}=(\hat{\beta_1},\hat{\beta_2})'$ be the OLS estimators; let $\hat{y_i}=\hat{\beta_1}+w_i\hat{\beta_2}$ be the fitted outcome values, and let $\hat{u_i}=y_i-\hat{y_i}$ be the residuals. $\bar{y}=\frac{1}{n}\sum_{i=1}^n y_i$ and $\bar{w}=\frac{1}{n}\sum_{i=1}^n w_i$ are the sample averages of the outcome variable and the regressor. The residual sum of squares, total sum of squares, and explained sum of squares read 
+\[
+SSR=\sum_{i=1}^n \hat{u_i}^2, SST=\sum_{i=1}^n (y_i-\bar{y})^2, SSE=\sum_{i=1}^n (\hat{y_i}-\bar{y})^2
+\]
+The coefficient of determination is $R^2=1-\frac{SSR}{SST}$.\\
+\begin{enumerate}
+\item Show that $SST=SSR+SSE$.\\
+We can rewrite $SSR$ as
+\[
+SSR=\sum_{i=1}^n (\hat{u_i})^2=\sum_{i=1}^n (y_i-\hat{y_i})^2
+\]
+Then we can rewrite $SST$ as
+\begin{align*}
+    SST&=\sum_{i=1}^n (y_i-\bar{y})^2=\sum_{i=1}^n (y_i-\hat{y_i}+\hat{y_i}-\bar{y})^2\\
+    &=\underset{SSR}{\sum_{i=1}^n (y_i-\hat{y_i})^2}+\underset{SSE}{\sum_{i=1}^n (\hat{y_i}-\bar{y})^2}+2\sum_{i=1}^n (y_i-\hat{y_i})(\hat{y_i}-\bar{y})
+\end{align*}
+The last term can be ignored
+\[
+2\sum_{i=1}^n (y_i-\hat{y_i})(\hat{y_i}-\bar{y})=2\sum_{i=1}^n \hat{u_i}(\hat{y_i}-\bar{y})=0
+\]
+because the residuals are orthogonal to the fitted values.\\
+Therefore, $SST=SSR+SSE$.
+\item Show that the estimated variance for $\hat{\beta_2}$ under \textit{homoskedasticity} of $u_i$ can be written as 
+\[
+\hat{\mathbb{V}}(\hat{\beta_2})=(n-K)^{-1}\frac{SSR}{\sum_{i=1}^n(w_i-\bar{w})^2}
+\]
+\\
+\textit{Hint}:You can start from the formula $\hat{\mathbb{V}}(\hat{\beta})=\sigma^2(X'X)^{-1}.$ Be sure to use the appropriate definitions for $\sigma^2$ and $X$.\\
+Starting from the formula for variance of OLS estimator under homoskedasticity assumption, we have 
+\[
+\hat{\mathbb{V}}(\hat{\beta})=\hat{\sigma^2}(X'X)^{-1}
+\]
+The estimator for $\sigma^2$ can be calculated as
+\[
+\hat{\sigma^2}=Var(\hat{u_i})=E(\hat{u_i}^2)-\underset{0}{(E(\hat{u_i}))^2}=\frac{1}{n}\sum_{i=1}^n\hat{u_i}^2=\frac{SSR}{n}
+\]
+To account for the loss in degrees of freedom, we deduct $K$ from $n$ so 
+\[
+\hat{\sigma^2}=\frac{SSR}{n-K}
+\]
+Since $X$ can be written as
+\[
+X=\begin{pmatrix} 1 & w_1 \\ 1 & w_2 \\ \vdots & \vdots \\ 1 & w_n \end{pmatrix}
+\]
+We can calculate $(X'X)^{-1}$ as
+\[
+(X'X)^{-1}=\begin{pmatrix} n & \sum_{i=1}^n w_i \\ \sum_{i=1}^n w_i & \sum_{i=1}^n w_i^2 \end{pmatrix}^{-1}=\frac{1}{n\sum_{i=1}^n w_i^2-\left(\sum_{i=1}^n w_i\right)^2}\begin{pmatrix} \sum_{i=1}^n w_i^2 & -\sum_{i=1}^n w_i \\ -\sum_{i=1}^n w_i & n \end{pmatrix}
+\]
+As the $(2,2)$ element of the matrix represents the variance of $\hat{\beta_2}$, we have
+\begin{align*}
+    \hat{\mathbb{V}}(\hat{\beta_2})&=\frac{SSR}{n-K}\frac{n}{n\sum_{i=1}^n w_i^2-\left(\sum_{i=1}^n w_i\right)^2}\\&=\frac{SSR}{n-K}\frac{1}{\sum_{i=1}^n w_i^2-\frac{1}{n}\left(\sum_{i=1}^n w_i\right)^2}\\&=\frac{SSR}{n-K}\frac{1}{\sum_{i=1}^n(w_i-\bar{w})^2}
+\end{align*}
+
+
+\end{enumerate}
+\subsection*{Problem 4}
+Consider the multiple regression model with three independent variables, under the classical linear model assumptions. That is,
+\[
+y_i=\beta_0+\beta_1x_{1i}+\beta_2x_{2i}+\beta_3x_{3i}+u_i
+\]
+You would like to test the null hypothesis $H_0:\beta_1-3\beta_2=1$.\\
+\begin{enumerate}
+    \item Let $\hat{\beta_1}$ and $\hat{\beta_2}$ denote the OLS estimators of $\beta_1$ and $\beta_2$. Find $\mathbb{V}(\hat{\beta_1}-3\hat{\beta_2})$ in terms of the variances of $\hat{\beta_1}$ and $\hat{\beta_2}$ and the covariance between them. What is the standard error of $\hat{\beta_1}-3\hat{\beta_2}$?\\
+ 
+    \begin{align*}
+        \mathbb{V}(\hat{\beta_1}-3\hat{\beta_2})=1^2Var(\hat{\beta_1})-(-3)^2Var(\hat{\beta_2})+(2\cdot 1 \cdot-3)Cov(\hat{\beta_1}\hat{\beta_2})\\=Var(\hat{\beta_1})+9Var(\hat{\beta_2})-6Cov(\hat{\beta_1}\hat{\beta_2})\\
+    \end{align*}
+    Then the standard error can be calculated as
+    \begin{align*}
+        SE(\hat{\beta_1}-3\hat{\beta_2})=\sqrt{Var(\hat{\beta_1})+9Var(\hat{\beta_2})-6Cov(\hat{\beta_1}\hat{\beta_2})} 
+    \end{align*}
+
+    \item Write the t-statistic for testing $H_0:\beta_1-3\beta_2=1$.\\
+    Using the formula for t-statistic, we have:
+    \begin{equation*}
+         t=\frac{(\hat{\beta_1}-3\hat{\beta_2})-1}{SE(\hat{\beta_1}-3\hat{\beta_2})}
+         =\frac{\hat{\beta_1}-3\hat{\beta_2}-1}{\sqrt{Var(\hat{\beta_1})+9Var(\hat{\beta_2})-6Cov(\hat{\beta_1}\hat{\beta_2})}}
+    \end{equation*}
+    \item Define $\theta=\beta_1-3\beta_2$ write a regression involving $\beta_0,\beta_2,\beta_3$ and $\theta$ that allows you directly obtain an estimate for $\theta$, say $\hat{\theta}$, and provide its standard error.\\
+    Substituting $\beta_1=3\beta_2+\theta$ into the original model, we have
+    \begin{align*}
+        y_i&=\beta_0+(3\beta_2+\theta)x_{1i}+\beta_2x_{2i}+\beta_3x_{3i}+u_i\\
+        &=\beta_0+3\beta_2x_{1i}+\theta x_{1i}+\beta_2x_{2i}+\beta_3x_{3i}+u_i\\
+        &=\beta_0+\theta x_{1i}+\beta_2(3x_{1i}+x_{2i})+\beta_3x_{3i}+u_i
+    \end{align*}
+    Then we can create a new variable $z_i=3x_{1i}+x_{2i}$ and rewrite the model as
+    \begin{align*}
+        y_i=\beta_0+\theta x_{1i}+\beta_2z_i+\beta_3x_{3i}+u_i
+    \end{align*}
+    The standard error of $\hat{\theta}$ is the same as the standard error of $\hat{\beta_1}-3\hat{\beta_2}$, which is
+    \begin{align*}
+        SE(\hat{\theta})=\sqrt{Var(\hat{\beta_1})+9Var(\hat{\beta_2})-6Cov(\hat{\beta_1}\hat{\beta_2})}
+    \end{align*}
+\end{enumerate}
+\subsection*{Problem 5}
+The following model is a simplified version of the multiple regression model used by Biddle
+and Hamermesh (1990) to study the tradeoff between time spent sleeping and working and
+to look at other factors affecting sleep:
+\[
+sleep_i=\beta_0+\beta_1totwrk_i+\beta_2educ_i+\beta_3age_i+u
+\]
+where \textit{sleep} and \textit{totwrk} (total work) are measured in minutes per week and \textit{educ} and \textit{age} are measured in years. Suppose we have estimated the regression and obtained the following results
+\[
+\hat{sleep_i}=\underset{(112.28)}{3628.25}-\underset{(.017)}{.148}totwrk_i-\underset{(5.88)}{11.13}educ_i+\underset{(1.45)}{2.20}age_i
+\]
+where $N=706$ and $R^2=0.113$
+\begin{enumerate}
+    \item Is either educ or age individually significant at the 5\% level against a two-sided alternative? Please justify your answer.\\
+    For \textit{educ}, the t-statistic is $-11.13/5.88 \approx -1.89$ \\ 
+    For \textit{age}, the t-statistic is $2.20/1.45 \approx 1.52$\\
+    The absolute value of both t-statistics are less than $1.96$, which is the standard critical value for a two-sided test at 5\% significance level, so neither \textit{educ} nor \textit{age} is individually significant at the 5\% level.
+    \item Dropping \textit{educ} and \textit{age} from the equation gives
+    \[
+    \hat{sleep_i}=\underset{(38.91)}{3586.38}-\underset{(.017)}{.151}totwrk_i
+    \]
+    where $N=706$ and $R^2=0.103$. Are \textit{educ} and \textit{age} jointly significant in the original equation at the 5\% level? Please justify your answer.\\
+    The unrestricted model (U) includes \textit{educ} and \textit{age} and $R_U^2=0.0113$\\
+    The restricted model (R) excludes \textit{educ} and \textit{age} and $R_R^2=0.103$\\
+    Here we have two restrictions, so $q=2$\\
+    Using the formula for F-statistic, we have
+    \begin{align*}
+        F=\frac{(R_U^2-R_R^2)/q}{(1-R_U^2)/(N-k_U-1)}=\frac{(0.113-0.103)/2}{(1-0.113)/(706-3-1)}\approx 3.96
+    \end{align*}
+    The critical value for F-statistic at 5\% significance level is 3.00, which is less than 3.96, so \textit{educ} and \textit{age} are jointly significant in the original equation at the 5\% level.
+    \item Does including \textit{educ} and \textit{age} in the model greatly affect the estimated trade off between sleeping and working?\\
+    The coefficient on \textit{totwrk} changes from $-0.148$ to $-0.151$, which is a small change. The $R^2$ value also changes from $0.113$ to $0.103$, which is also a small change. Therefore, including \textit{educ} and \textit{age} in the model does not greatly affect the estimated trade off between sleeping and working.
+\end{enumerate}
+\end{flushleft}
+\end{document}
