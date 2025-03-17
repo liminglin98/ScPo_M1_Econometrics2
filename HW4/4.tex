@@ -1,0 +1,148 @@
+\documentclass[12pt]{article}
+\usepackage[utf8]{inputenc}
+\usepackage{setspace}
+\usepackage[letterpaper]{geometry}
+\usepackage{times}
+\usepackage{graphicx}
+\usepackage{amsfonts}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{graphicx}
+\usepackage{float}
+\usepackage{tabularx}
+\geometry{top=1.0in, bottom=1.0in, left=1.0in, right=1.0in}
+\setlength\parindent{24pt}
+\begin{document}
+\begin{flushleft}
+Liming Lin\\
+Professor Moshe Buchinsky\\
+Econometrics II\\
+Problem Set 4\\
+Mar. 14th, 2025\\
+\section*{Part II --- Theory}
+\subsection*{Problem 2}
+You have proven in class that the OLS estimator $\hat{\beta}$ is a consistent estimator of $\beta$ in the following simple regression:
+\begin{align*}
+    y=\alpha+\beta x+u
+\end{align*}
+Given such an estimator, define an estimator of $\alpha$ by $\hat{\alpha}$ = $\bar{y}-\hat{\beta} \bar{x}$. Show that this estimator is consistent.\\
+We first take the average of the regression equation:
+\begin{align*}
+    \bar{y}=\alpha+\beta\bar{x}+\bar{u}
+\end{align*}
+as $\alpha$ and $\beta$ are constants, we can remove the bars from them.\\
+Then we substitute $\bar{y}$ inton the estimator:
+\begin{align*}
+    \hat{\alpha}&=\bar{y}-\hat{\beta}\bar{x}\\
+    &=\alpha+\beta\bar{x}+\bar{u}-\hat{\beta}\bar{x}\\
+    &=\alpha+(\beta-\hat{\beta})\bar{x}+\bar{u}
+\end{align*}
+As $\hat{\beta}$ is a consistent estimator of $\beta$, we have $\hat{\beta}\xrightarrow{p}\beta$, implying that $(\beta-\hat{\beta})\xrightarrow{p}0$.\\
+Also, $\bar{u}\xrightarrow{p}0$ as the error term is assumed to be mean zero.\\
+Therefore, $\hat{\alpha}\xrightarrow{p}\alpha$ and $\hat{\alpha}$ is a consistent estimator of $\alpha$.\\
+
+\subsection*{Problem 3}
+
+Let's consider the following model $y_i=\beta_0+\beta_1x_{1i}+...\beta_{k}x_{ki}+u_i$, for $i=1...n$. We use OLS to estimate the model. We assume $\mathbb{E}[x_i u_i=0]$ and that $\mathbb{E}[x_i x_i^T]$ is non-singular. Prove that $\hat{\sigma^2}=\frac{1}{n-k-1}\sum_{i=1}^n \hat{u_i}^2$ is a consistent estimator of $\sigma^2=Var(u_i)$.\\
+\textit{Hint: Start by proving that $\hat{u_i}=(u_i-\bar{u})-\sum_{j=1}^k(\hat{\beta_j}-\beta_j)(x_{ij}-\bar{x_j})$.}\\
+We use OLS to estimate the parameters and define the residuals as
+\[
+\hat{u}_i = y_i - \hat{y}_i,
+\]
+where the fitted values are
+\[
+\hat{y}_i = \hat{\beta}_0 + \hat{\beta}_1 x_{1i} + \cdots + \hat{\beta}_k x_{ki}.
+\]
+Using the results from Problem 2, we can express the intercept as,
+\[
+\hat{\beta}_0 = \bar{y} - \sum_{j=1}^k \hat{\beta}_j \bar{x}_j,
+\]
+Thus, the fitted value can be rewritten as
+\[
+\hat{y}_i = \bar{y} + \sum_{j=1}^k \hat{\beta}_j (x_{ij}-\bar{x}_j),
+\]
+and the residual becomes
+\[
+\hat{u}_i = y_i - \bar{y} - \sum_{j=1}^k \hat{\beta}_j (x_{ij}-\bar{x}_j).
+\]
+
+Then we try to express $y_i - \bar{y}$ in terms of the true model.
+
+\[
+y_i = \beta_0 + \beta_1 x_{1i} + \cdots + \beta_k x_{ki} + u_i,
+\]
+the sample mean is
+\[
+\bar{y} = \beta_0 + \beta_1 \bar{x}_1 + \cdots + \beta_k \bar{x}_k + \bar{u},
+\]
+
+Subtracting $\bar{y}$ from $y_i$, we have
+\[
+y_i - \bar{y} = \beta_1 (x_{1i}-\bar{x}_1) + \cdots + \beta_k (x_{ki}-\bar{x}_k) + (u_i-\bar{u}).
+\]
+Substitute this expression into the residual:
+\[
+\hat{u}_i = \left[\beta_1 (x_{1i}-\bar{x}_1) + \cdots + \beta_k (x_{ki}-\bar{x}_k) + (u_i-\bar{u})\right] - \sum_{j=1}^k \hat{\beta}_j (x_{ij}-\bar{x}_j).
+\]
+By summing the terms with $\beta$
+\[
+\hat{u}_i = (u_i-\bar{u}) + \sum_{j=1}^k \beta_j (x_{ij}-\bar{x}_j) - \sum_{j=1}^k \hat{\beta}_j (x_{ij}-\bar{x}_j).
+\]
+Then we factor out $x_{ij}-\bar{x}_j$ to have
+\[
+\hat{u}_i = (u_i-\bar{u}) - \sum_{j=1}^k (\hat{\beta}_j-\beta_j)(x_{ij}-\bar{x}_j)
+\]
+
+We now turn to the estimator
+\[
+\hat{\sigma}^2 = \frac{1}{n-k-1}\sum_{i=1}^n \hat{u}_i^2
+\]
+we square both sides of the expression for $\hat{u}_i$:
+\[
+\hat{u}_i^2 = (u_i-\bar{u})^2 - 2(u_i-\bar{u})\sum_{j=1}^k (\hat{\beta}_j-\beta_j)(x_{ij}-\bar{x}_j) + \left[\sum_{j=1}^k (\hat{\beta}_j-\beta_j)(x_{ij}-\bar{x}_j)\right]^2.
+\]
+Averaging over \(i\) gives
+\[
+\frac{1}{n}\sum_{i=1}^n \hat{u}_i^2 = \frac{1}{n}\sum_{i=1}^n (u_i-\bar{u})^2 - \frac{2}{n}\sum_{i=1}^n (u_i-\bar{u})\sum_{j=1}^k (\hat{\beta}_j-\beta_j)(x_{ij}-\bar{x}_j) + \frac{1}{n}\sum_{i=1}^n \left[\sum_{j=1}^k (\hat{\beta}_j-\beta_j)(x_{ij}-\bar{x}_j)\right]^2.
+\]
+
+\begin{enumerate}
+    \item \textbf{First Term:} 
+    \[
+    \frac{1}{n}\sum_{i=1}^n (u_i-\bar{u})^2.
+    \]
+    By the Law of Large Numbers, this sample variance converges in probability to \(\sigma^2\).
+
+    \item \textbf{Second Term:} 
+    Since $\mathbb{E}[x_i u_i=0]$ and that $\mathbb{E}[x_i x_i^T]$ is non-singular, we have that $\hat{\beta_j}$ is a consistent estimator of $\beta_j$ and $\hat{\beta_j}\xrightarrow{p}\beta_j$. Thus, we have
+    \[
+    \frac{2}{n}\sum_{i=1}^n (u_i-\bar{u})\sum_{j=1}^k (\hat{\beta}_j-\beta_j)(x_{ij}-\bar{x}_j) \xrightarrow{p} 0.
+    \]
+
+    \item \textbf{Third Term:}
+    Similarly, we have
+    \[
+    \frac{1}{n}\sum_{i=1}^n \left[\sum_{j=1}^k (\hat{\beta}_j-\beta_j)(x_{ij}-\bar{x}_j)\right]^2 \xrightarrow{p} 0.
+    \]
+\end{enumerate}
+
+Therefore, we have
+\[
+\frac{1}{n}\sum_{i=1}^n \hat{u}_i^2 = \frac{1}{n}\sum_{i=1}^n (u_i-\bar{u})^2 ,
+\]
+The right hand side is by definition the sample variance of the residuals, which converges in probability to \(\sigma^2\). Thus, we conclude that
+\[
+\frac{1}{n}\sum_{i=1}^n \hat{u}_i^2 \xrightarrow{p} \sigma^2.
+\]
+Since
+\[
+\frac{n}{n-k-1} \to 1 \quad \text{as} \quad n \to \infty,
+\]
+dividing by \(n-k-1\) rather than \(n\) does not affect the limit. Thus, we conclude that
+\[
+\hat{\sigma}^2 = \frac{1}{n-k-1}\sum_{i=1}^n \hat{u}_i^2 \xrightarrow{p} \sigma^2,
+\]
+which means that \(\hat{\sigma}^2\) is a consistent estimator of \(\sigma^2\).
+
+\end{flushleft}
+\end{document}
