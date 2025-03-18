@@ -1,0 +1,194 @@
+\documentclass[a4paper,10pt]{article}
+\usepackage[margin=0.7in]{geometry} % Adjust margin to fit your desired length
+\usepackage{amsmath, amssymb}
+\usepackage{lscape}  % If you prefer landscape format for one of the pages, uncomment usage
+\begin{document}
+
+%---------------- FIRST PAGE ----------------%
+\section*{\centering Econometrics Cheat Sheet (Page 1)}
+
+\subsection*{1. Simple Linear Regression}
+\textbf{Model:} 
+\[
+y_i = \alpha + \beta x_i + u_i, \quad i = 1,\ldots,N.
+\]
+\textbf{OLS Estimators:}
+\[
+\hat{\beta} \;=\; \frac{\mathrm{Cov}(x,y)}{\mathrm{Var}(x)}, 
+\quad 
+\hat{\alpha} \;=\; \bar{y} - \hat{\beta}\,\bar{x}.
+\]
+\textbf{Residuals:} 
+\[
+\hat{u}_i \;=\; y_i - \hat{y}_i,\quad 
+\sum_{i=1}^{N}\hat{u}_i = 0,\quad
+\sum_{i=1}^{N} x_i\hat{u}_i = 0.
+\]
+\textbf{SSR and $R^2$:}
+\[
+\mathrm{SSR} = \sum (y_i - \hat{y}_i)^2,\quad
+R^2 = 1 - \frac{\mathrm{SSR}}{\mathrm{SST}}.
+\]
+\textbf{Special cases:}
+\[
+\text{(No regressor) } \hat{\alpha} = \bar{y}; 
+\quad
+\text{(No intercept) } \hat{\beta} = \frac{\sum x_i y_i}{\sum x_i^2}.
+\]
+
+\subsection*{2. Multiple Regression}
+\textbf{Model:}
+\[
+y_i = x_i'\beta + u_i,\quad x_i = (1, x_{i1}, x_{i2},\ldots, x_{iK})'.
+\]
+\textbf{OLS Estimator (Matrix Form):}
+\[
+\hat{\beta} = (X'X)^{-1} X'y, \quad 
+X = 
+\begin{pmatrix}
+x_1' \\
+x_2' \\
+\vdots \\
+x_N'
+\end{pmatrix}.
+\]
+\textbf{Predictions and Residuals:}
+\[
+\hat{y} = P_X y,\quad \hat{u} = y - \hat{y}, \quad 
+P_X = X(X'X)^{-1}X',\quad M_X = I - P_X.
+\]
+\textbf{ANOVA Decomposition:}
+\[
+\mathrm{SST} = \mathrm{SSE} + \mathrm{SSR}.
+\]
+\textbf{Adjusted $R^2$:}
+\[
+R^2_{\text{adj}} 
+= 1 - 
+\frac{\mathrm{SSR}/(N - K - 1)}{\mathrm{SST}/(N - 1)}.
+\]
+\textbf{Dummy Variables:}
+\begin{itemize}
+\item Represent categories by 0/1 indicators.
+\item Omit one reference category to avoid perfect collinearity.
+\end{itemize}
+
+\subsection*{3. Hypothesis Testing}
+\textbf{General Form:} 
+\[
+H_0: \theta = \theta_0 \quad \text{vs.}\quad H_1: \theta \neq \theta_0.
+\]
+\textbf{t-test (single parameter):}
+\[
+t = \frac{\hat{\theta} - \theta_0}{\mathrm{SE}(\hat{\theta})}.
+\]
+\textbf{F-test (joint hypotheses):}
+\[
+F 
+= \frac{(\mathrm{SSR}_R - \mathrm{SSR}_{UR})/q}{\mathrm{SSR}_{UR}/(N - K - 1)}
+\quad \text{(for $q$ restrictions).}
+\]
+\textbf{Wald (Chi-square) Test:}
+\[
+W 
+= (R\hat{\beta} - r)'\bigl(R(X'X)^{-1}R'\bigr)^{-1}(R\hat{\beta} - r)
+\sim \chi^2(q).
+\]
+\textbf{Type I \& II Errors:}
+\begin{itemize}
+\item Type I: Rejecting $H_0$ when it’s true.
+\item Type II: Failing to reject $H_0$ when it’s false.
+\end{itemize}
+
+\pagebreak  % Force a second page
+
+%---------------- SECOND PAGE ----------------%
+\section*{\centering Econometrics Cheat Sheet (Page 2)}
+
+\subsection*{4. Asymptotic Theory}
+\textbf{Convergence:}
+\begin{itemize}
+\item $X_n \xrightarrow{d} X$: Convergence in distribution 
+  (CDFs converge pointwise).
+\item $X_n \xrightarrow{p} X$: Convergence in probability 
+  ($P(|X_n - X| > \varepsilon) \to 0$).
+\item $X_n \xrightarrow{a.s.} X$: Almost sure convergence 
+  ($P(\lim_{n\to\infty} X_n = X)=1$).
+\end{itemize}
+
+\textbf{Law of Large Numbers (LLN):}
+\[
+\frac{1}{N}\sum_{i=1}^N X_i \xrightarrow{p} E[X_i],\quad
+\frac{1}{N}\sum_{i=1}^N X_i \xrightarrow{a.s.} E[X_i].
+\]
+\textbf{Central Limit Theorem (CLT):}
+\[
+\sqrt{N}\bigl(\bar{X} - \mu\bigr) \xrightarrow{d} 
+N(0, \sigma^2).
+\]
+\textbf{Slutsky's Theorem:}
+\begin{itemize}
+\item If $X_n \xrightarrow{d} X$ and $a_n \xrightarrow{p} a$, then 
+  $X_n + a_n \xrightarrow{d} X + a$.
+\item Multiplication: 
+  $X_n a_n \xrightarrow{d} aX$, etc.
+\end{itemize}
+
+\textbf{Delta Method:}
+If $\sqrt{N}(X_n - \mu) \xrightarrow{d} N(0, \Sigma)$ and $f$ is differentiable,
+\[
+\sqrt{N}\bigl[f(X_n) - f(\mu)\bigr]
+ \xrightarrow{d} 
+N\bigl(0,\,J(\mu)\,\Sigma\,J(\mu)'\bigr),
+\]
+where $J(\mu)$ is the Jacobian of $f$ at $\mu$.
+
+\subsection*{5. OLS Asymptotics}
+\textbf{Consistency of OLS:}
+\[
+\hat{\beta} \xrightarrow{p} \beta_0 
+\quad \text{if } E[x_i u_i] = 0 \text{ and } 
+\mathrm{rank}(X'X) = K+1.
+\]
+\textbf{Asymptotic Normality:} 
+\[
+\sqrt{N}(\hat{\beta} - \beta_0) \xrightarrow{d} 
+N\bigl(0,\, \sigma^2 (X'X)^{-1}\bigr).
+\]
+(Under homoskedasticity and normal errors.)
+
+\subsection*{6. Maximum Likelihood Estimation (MLE)}
+\textbf{General Steps:}
+\begin{itemize}
+\item Likelihood: 
+  $L(\theta) = \prod_{i=1}^N f(y_i;\theta).$
+\item Log-likelihood: 
+  $\ell(\theta) = \sum_{i=1}^N \ln f(y_i;\theta).$
+\item $\hat{\theta}_{MLE} = \arg\max_{\theta} \ell(\theta).$
+\end{itemize}
+
+\textbf{Normal Linear Model MLE:}
+\[
+\hat{\beta}_{MLE} = \hat{\beta}_{OLS}, 
+\quad
+\hat{\sigma}_{MLE}^2 = \frac{\mathrm{SSR}}{N}.
+\]
+
+\subsection*{7. Heteroskedasticity}
+\textbf{Definition:} 
+$\mathrm{Var}(u_i \mid X_i) = \sigma_i^2$ (not constant).
+\textbf{Implications:}
+\begin{itemize}
+\item OLS remains unbiased if $E[x_i u_i] = 0$.
+\item Variances of OLS estimates are misestimated if uncorrected.
+\end{itemize}
+\textbf{Robust (White) Standard Errors:}
+\[
+\widehat{\mathrm{Var}}(\hat{\beta})
+= (X'X)^{-1}
+\Bigl(\sum_{i=1}^N \hat{u}_i^2 x_i x_i'\Bigr)
+(X'X)^{-1}.
+\]
+
+\vfill  % Attempt to push final content to bottom if needed
+\end{document}
