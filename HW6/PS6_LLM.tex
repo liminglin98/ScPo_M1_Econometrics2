@@ -1,0 +1,162 @@
+\documentclass[12pt]{article}
+\usepackage[utf8]{inputenc}
+\usepackage{setspace}
+\usepackage[letterpaper]{geometry}
+\usepackage{times}
+\usepackage{graphicx}
+\usepackage{amsfonts}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{graphicx}
+\usepackage{float}
+\usepackage{tabularx}
+\usepackage[shortlabels]{enumitem}
+\geometry{top=1.0in, bottom=1.0in, left=1.0in, right=1.0in}
+\setlength\parindent{24pt}
+\begin{document}
+\begin{flushleft}
+Liming Lin\\
+Professor Moshe Buchinsky\\
+Econometrics II\\
+Problem Set 2\\
+Apr. 13th, 2025\\
+\section*{Part II --- Theory}
+\subsection*{Problem 2}
+Which of the following can cause an OLS estimator to be biased? Explain.\\
+\begin{enumerate}
+    \item Heteroskedasticity\\~\\
+    Suppose for a linear regression model $y_i=a+bx_i+u_i$ with an estimator 
+    \[
+    \hat{b}=\sum_{i=0}^n(x_i x_i')^{-1}\sum_{i=0}^n(x_i y_i)
+    \]
+    We plug in the formula of $y_i$ into the estimator $\hat{b}$, we have: 
+    \[
+    \hat{b}=\sum_{i=0}^n(x_i x_i')^{-1}\sum_{i=0}^n(x_i (bx_i+u))
+    \]
+    And thus the expected value of $\hat{b}$ is:
+    \begin{align*}
+    \mathbb{E}(\hat{b}) &=\mathbb{E}\left[\sum_{i=0}^n(x_i x_i')^{-1}\sum_{i=0}^nx_i (bx_i+u_i)\right] \\
+    &= \mathbb{E}\left[\sum_{i=0}^n(x_i x_i')^{-1}(x_i x_i b)\right]+\mathbb{E}\left[\sum_{i=0}^n(x_i x_i')^{-1}x_i u_i\right] \\
+    &= b+\mathbb{E}\left[\mathbb{E}\left[\sum_{i=0}^n(x_i x_i')^{-1}x_i u_i | x_i \right]\right] \\
+    &= b + \sum_{i=0}^n(x_i x_i')^{-1}x_i \mathbb{E}(u | x_i) \\
+    \end{align*}
+    With heteroscedasticity, $\mathbb{E}(u | x_i) \neq 0$, thus the second term is not equal to 0. Therefore, the OLS estimator is biased.
+    \item Omitting an important variable \\~\\
+    Suppose we have the right model:
+    \[
+    y_i=a+\hat{b}x_i+cz_i+u_i
+    \]
+    If we omit the variable $z_i$, we have:
+    \[
+    y_i=a^*+\tilde{b}x_i+e_i
+    \]
+    And then the expected value of $\tilde{b}$ is:
+    \begin{align*}
+    \mathbb{E}(\tilde{b}) &=\mathbb{E}\left[\sum_{i=0}^n(x_i x_i')^{-1}\sum_{i=0}^n x_i y_i\right] \\
+    &= \mathbb{E} \left[ \sum_{i=0}^n(x_i x_i')^{-1}\sum_{i=0}^nx_i (bx_i+cz_i+u_i)\right] \\
+    &= \mathbb{E} \left[ \sum_{i=0}^n(x_i x_i')^{-1}(x_i x_i')b \right]+ \mathbb{E} \left[ \sum_{i=0}^n(x_i x_i')^{-1}x_i c z_i \right]+\mathbb{E} \left[ \sum_{i=0}^n(x_i x_i')^{-1} x_i u_i \right]\\
+    &= b + c\sum_{i=0}^n(x_i x_i')^{-1}x_i \mathbb{E}(z_i | x_i) + \sum_{i=0}^n(x_i x_i')^{-1}x_i \mathbb{E}(u_i | x_i) \\
+    \end{align*}
+    Since there is no heteroscedasticity, $\mathbb{E}(u_i | x_i) = 0$. For the second term, if the missing variables $z_i$ are correlated with the regressors $x_i$, then $\mathbb{E}(z_i | x_i) \neq 0$. Therefore, the OLS estimator is biased. But, if they are not correlated, then $\tilde{b}$ is not biased.
+    \item A sample correlation of 0.95 between two regressors included in the model\\~\\
+    Suppose we have the model:
+    \[
+    y_i=a+bx_i+cz_i+u_i
+    \]
+    Note that the two coefficients are symmetric so I only choose $b$ and its estimator is:
+    \[
+    \hat{b}=\frac{\sum_{i=0}^n(x_i y_i)-c\sum_{i=0}^n(x_i z_i)}{\sum_{i=0}^n(x_i^2)}
+    \]
+    Then we plug in the formula of $y_i$ into the estimator $\hat{b}$, we have:
+    \begin{align*}
+        \hat{b}=&\frac{\sum_{i=0}^n(x_i (bx_i+cz_i+u_i))-c\sum_{i=0}^n(x_i z_i)}{\sum_{i=0}^n(x_i^2)}\\
+        =&\frac{\sum_{i=0}^n(x_i^2 b+c x_i z_i+ x_i u_i)-c\sum_{i=0}^n(x_i z_i)}{\sum_{i=0}^n(x_i^2)}\\
+        =&\frac{\sum_{i=0}^n(x_i^2 b)+\sum_{i=0}^n(x_i u_i)}{\sum_{i=0}^n(x_i^2)}\\
+        =&b+\frac{\sum_{i=0}^n(x_i u_i)}{\sum_{i=0}^n(x_i^2)}\\
+    \end{align*}
+    Then we take the expected value of $\hat{b}$:
+    \begin{align*}
+        \mathbb{E}(\hat{b})=&\mathbb{E}\left[b+\frac{\sum_{i=0}^n(x_i u_i)}{\sum_{i=0}^n(x_i^2)}\right]\\
+        &=b+\mathbb{E}\left[\mathbb{E}\left[\frac{\sum_{i=0}^n(x_i u_i)}{\sum_{i=0}^n(x_i^2)}|x_i\right]\right]\\
+        &=b+\frac{\sum_{i=0}^n(x_i \mathbb{E}(u_i|x_i))}{\sum_{i=0}^n(x_i^2)}\\
+    \end{align*}
+As long as there is no heteroscedasticity and $\mathbb{E}(u_i|x_i)=0$, the OLS estimator is unbiased; the correlation between the two regressors does not affect the bias of the OLS estimator.\\
+\end{enumerate}
+\subsection*{Problem 3}
+We consider the following model
+\[
+y_i=a+bx_i+u_i
+\]
+The variable $y_i$ represents the number of worked hours for the individual $i$ during the week preceding the survey and $x_i$ is the hourly wage of this individual.
+\begin{enumerate}
+    \item Why the variable $x_i$ might be correlated with the residual?\\~\\
+    Because the hourly wage is definitely not the only factor that determine the number of worked hours. For example, people's professions and education can also affect the required and preferred working hours.
+    \item We assume that $x_i$ is endogenous. Show then that the OLS estimator $\hat{b}$ of $b$ is biased and compute its bias as a function of $x_i$ and $u_i$. Do we expect a positive or a negative bias? Justify.\\~\\
+    Following the same drivaition we have for the heteroscedasticity case in the previous problem
+    \begin{align*}
+    \mathbb{E}(\hat{b}) &=\mathbb{E}\left[\sum_{i=0}^n(x_i x_i')^{-1}\sum_{i=0}^nx_i (bx_i+u_i)\right] \\
+    &= \mathbb{E}\left[\sum_{i=0}^n(x_i x_i')^{-1}(x_i x_i b)\right]+\mathbb{E}\left[\sum_{i=0}^n(x_i x_i')^{-1}x_i u_i\right] \\
+    &= b+\mathbb{E}\left[\mathbb{E}\left[\sum_{i=0}^n(x_i x_i')^{-1}x_i u_i | x_i \right]\right] \\
+    &= b + \sum_{i=0}^n(x_i x_i')^{-1}x_i \mathbb{E}(u | x_i) \\
+    \end{align*}
+    Since the variable $x_i$ is endogenous, $\mathbb{E}(u | x_i) \neq 0$. Therefore, the OLS estimator is biased with the second term is the function of bias given $x_i$ and $u_i$. The sign of the bias depends on the sign of $\mathbb{E}(u | x_i)$ and the correlation between $x_i$ and $u_i$. And for omitted variables like education and profession, we can expect that they are positively correlated with the hourly wage and thus a positive bias.\\
+    \item Among the following variables: which ones could be good instruments? Dummy for part-time job, individual’s profession, living area, diploma, weekly wage. Justify.\\~\\
+    There are two criteria for a good instrument: (1) it should be correlated with the endogenous variable $x_i$; (2) it should not be correlated with the error term $u_i$.\\
+    Part-time job: Not good: It is correlated with the hourly wage, but also affects the working hours and thus correlated with the error term.\\
+    Individual's profession: Not good: As mentioned in the previous quesiton, it is correlated with both the hourly wage and the working hours.\\
+    Living area: Maybe good: The living area is definitely correlated to the hourly wage because of the local economy. But it is not clear whether it is correlated with the working hours.\\
+    Diploma: Not good: This is the same as education so it is correlated with both the hourly wage and the working hours.\\
+    Weekly wage: Not good: Although weekly wage is not necessarily a linear transformation of the hourly wage, we expect a positive correlation. However, it still also correlate witht the working hours.\\
+    \item We will choose the parents’ profession as instruments and we note $z_i$ the vector of these two instruments. How do we compute the 2SLS estimator of the model using this instrument in a two-step process?\\~\\
+    We can denote the profession of father as $z_{i1}$ and the profession of mother as $z_{i2}$. Then we expand the vector of $z_i$. So the first step model is to regress the hourly wage on these two variables:
+    \[
+    x_i=a+b_1z_{i1}+b_2z_{i2}+v_i
+    \]
+    And then we can get the fitted value $\hat{x}_i$ of the hourly wage that is not correlated with the error term $u_i$.
+    Then we can plug in the fitted value $\hat{x}_i$ into the original model:
+    \[
+    y_i=a+b\hat{x}_i +u_i
+    \]
+    Then we can estimate $b$ with the $\hat{b}_{2SLS}$
+    \item We run the estimation of $\hat{b}_{2sls}$ over a sample of 1000 individuals. The augmented regression of $y_i$ on $x_i$ and $\hat{v}_i$ (lecture 8 sliude 12) and the constant gives:
+    \[
+    \hat{y}_i=\underset{(12)}{174}x_i-\underset{(12)}{204}\hat{v}_i+\underset{(3)}{14}
+    \]
+    where standard errors are in the brackets.
+    \begin{enumerate}[(a)]
+    \item What is the variable $\hat{v}_i$.\\~\\
+    The variable $\hat{v}_i$ is the residual of the first step regression, calculated by $x_i-\hat{x}_i$. It is the part of the hourly wage that is not explained by the parents' profession.\\
+    \item Give the mean and standard errors of $\hat{b}_{2sls}$.\\~\\
+    In the augmented regression, the coefficient of $x_i$ is the 2SLS estimator $\hat{b}_{2sls}$. So the mean of $\hat{b}_{2sls}$ is 174 and the standard error is 12.\\
+    \item Test the exogeneity of $x_i$.\\~\\
+    We can use the t-test to test the exogeneity of $x_i$. The null hypothesis is that $x_i$ is exogenous, which means that the coefficient of $\hat{v}_i$ is equal to 0. The t-statistic is:
+    \[
+    t=\frac{\hat{v}_i}{\hat{\sigma}_{\hat{v}_i}}=\frac{-204}{12}=-17
+    \]
+    Which is much larger than the critical value of $1.96$ for the 5\% significance level. So we can reject the null hypothesis and conclude that $x_i$ is endogenous.\\
+    \item What is the sign of the bias of the OLS estimator? Comment.\\~\\
+    The result form the augmented regression shows that the coefficient of $\hat{v}_i$ is negative, so the correlation between $\hat{v}_i$ and $u_i$ is negative. And since $x_i=\hat{x}_i+\hat{v}_i$, the correlation between $u_i$ and $x_i$ is also negative. Given the function of bias we have before, the OLS estimator is biased downwards.\\
+    \end{enumerate} 
+    \item Can we test the validity of the instruments “parent’s professions” with the information we have? How?\\~\\
+    Since we have two instruments and only one endogenous variable, which is the case of over-identification, we can use the Sargan test to test the validity of the instruments. We first calculate the redsiduals from the 2SLS regression by 
+    \[
+    \hat{u}_i=y_i-\hat{b}_{2SLS}-\alpha
+    \]
+    Then we run the regression of the residuals on the instruments:
+    \[
+    \hat{u_i}=\alpha+\beta_1z_{i1}+\beta_2z_{i2}+\epsilon_i
+    \]
+    The null hypothesis is that the residual is not correlated with the instruments, so the instruments are valid. The Sargan test statistic is:
+    \[
+    S=\frac{NR^2}{1-R^2} \backsim \chi^2(H,K)
+    \]
+    Where $N$ is the sample size, $R^2$ is from the regression, $H$ is the number of instruments and $K$ is the number of endogenous variables. If the test statistic is larger than the critical value from the chi-square distribution, we can reject the null hypothesis and conclude that the instruments are not valid. If not, then we can accept the null hypothesis and conclude that the instruments are valid. However, since we do not have the exact numbers on $N$ and $R^2$, we cannot calculate the test statistic.\\
+    \item Now, we will consider the heteroscedasticity of the model. Explain, why the conditional variance $\mathbb{V}(u_i|x_i)$ might be monotone in $x_i$. Which method could we use to test the heteroscedasticity?\\~\\
+    With higher hourly wage $x_i$, people have more choices for allocating their times: either work more to earn more or spend more time on leisture. As a result, the variance of the working hours $u_i$ is monotone in $x_i$. We can use the White's test (like in the emperical question above) to test the heteroscedasticity. In this case we can regress $\hat{u}_i^2$ from the 2SLS regression and regress it on the predicted value from the 2SLS regression, $\hat{y}_i$ and $\hat{y}_i^2$. Then we can calculate the test statistic:
+    \[
+    T=N\hat{R}^2 \backsim \chi^2(H,K)
+    \]
+    If the test statistic is larger than the critical value from the chi-square distribution, we can reject the null hypothesis and conclude that the model is heteroscedastic. If not, then we can accept the null hypothesis and conclude that the model is homoscedastic.\\
+\end{enumerate}
+\end{flushleft}
+\end{document}
