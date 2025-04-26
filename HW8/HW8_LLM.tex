@@ -91,6 +91,59 @@ Lastly, we can compute the standard error of $Age^*$ using the delta method:
 \[
 \text{Var}(\text{Age}^*) \approx \nabla g' \, \text{Var}(\beta) \, \nabla g \approx 0.0000016755
 \]
-And take the square root to get the standard error: $0.001294$
+And take the square root to get the standard error: $0.001294$\\~\\
+5. What do we need to normalize $Var(u_i)$ to for the parameters to be identified? Why
+does Stata not output a constant term?\\~\\
+In a probit model, we need to normalize the variance of the error term $Var(u_i)$ to 1 for the parameters to be identified. This is because the probit model assumes that the error term follows a standard normal distribution, which has a mean of 0 and a variance of 1. Otherwise we can multiply parameters and cut-off point to get different models explain the same probabilities, making the model un-identifiable.\\
+Stata does not report a constant term because the in ordered probit model, the cut-off points are estimated instead of the intercept. The cut-off points represent the thresholds that separate the different categories of the dependent variable. \\~\\
+6. Give an intuition why the estimated parameters for the probit model are similar to
+those of the ordered probit model.\\~\\
+Both the probit and ordered probit models estimate the effect of covariates on an unobserved latent variable (inclination to have children). Although the outcome variable differs (binary vs. ordered categories), the underlying structure is similar, explaining why the coefficients in the two models are close.\\~\\
+7. What is the probability to have three children for an individual who is 35 years old
+with no high school graduation?\\~\\
+\begin{align*}
+Y^*&=\hat{\beta}_{age} \times \frac{35}{100}+\hat{\beta}_{age^2} \times \frac{35}{100}^2\\
+&=0.26945 \times 0.35+(-0.3453101) \times 12.25\\
+&= -4.134732225
+\end{align*}
+Since the prodicted value is negative, which is much lower than the cut-off point for having three children, we can conclude that the probability of having three children for an individual who is 35 years old with no high school graduation is 0.\\~\\
+8. What is the expected number of children predicted given household characteristics?\\~\\
+$\Pr(0) = \Phi(cut1 - Y^*) = \Phi (4.436445 - (-4.13)) = \Phi(8.566445) \approx 1 $\\
+$\Pr(1) = \Phi(cut2 - Y^*) - \Phi(cut1 - Y^*) = \Phi(5.178941 - (-4.13) -1 = \Phi(9.308941)) - 1 \approx 1-1=0 $\\
+$\Pr(2) = \Phi(cut3 - Y^*) - \Phi(cut2 - Y^*) = \Phi( 6.082635 - (-4.13)) -1 = \Phi(10.212635)-1 \approx 1-1=0 $\\
+$\Pr(3) = \Phi(cut4 - Y^*) - \Phi(cut3 - Y^*) =  \Phi( 6.83505 - (-4.13)) = \Phi(10.96505) - 1 \approx 1-1 =0$\\
+$\Pr(4+) = 1 - \Phi(cut4 - Y^*) = 1-\Phi(10.96505) \approx 1-1 =0 $\\
+To sum up, the expected number of children predicted given this household characteristics is:
+\[
+E[enf] = 0 \cdot \Pr(0) + 1 \cdot \Pr(1) + 2 \cdot \Pr(2) + 3 \cdot \Pr(3) + 4+ \cdot \Pr(4+) = 0+0+0+0+0=0
+\]\\~\\
+\section*{Part II --- Theory}
+\subsection*{Problem 2}
+Let \textit{grad} be a dummy variable for whether a student-athlete at a large university graduates in five years. Let \textit{hsGPA} and \textit{SAT} be high school grade point average and SAT score, respectively. Let study be the number of hours spent per week in an organized study hall. Suppose that, using data on 420 student-athletes, the following logit model is obtained:
+\[
+Pr(grad=1|hsGPA, SAT, study) = \Lambda(-1.17 + 0.24hsGPA + 0.00058SAT + 0.073study)
+\]
+where $\Lambda(x) = \frac{exp(z)}{1+exp(z)}$ is the logit function. Holding hsGP A fixed at 3.0 and SAT fixed at 1,200, compute the estimated difference in the graduation probability for someone who spent 10 hours per week in study hall and someone who spent 5 hours per week.\\~\\
+Firstly, we compute the graduation probability for someone who spent 10 hours per week in study hall:
+\begin{align*}
+Pr(grad=1|hsGPA=3.0, SAT=1200, study=10) &= \Lambda(-1.17 + 0.24 \cdot 3.0 + 0.00058 \cdot 1200 + 0.073 \cdot 10)\\
+&= \Lambda(-1.17 + 0.72 + 0.696 + 0.73)\\
+&= \Lambda(0.976)\\
+&= \frac{exp(0.976)}{1+exp(0.976)}\\
+&\approx \frac{2.651}{1+2.651}\\
+&\approx 0.7266
+\end{align*}
+Then we compute the graduation probability for someone who spent 5 hours per week in study hall:
+\begin{align*}
+Pr(grad=1|hsGPA=3.0, SAT=1200, study=5) &= \Lambda(-1.17 + 0.24 \cdot 3.0 + 0.00058 \cdot 1200 + 0.073 \cdot 5)\\
+&= \Lambda(-1.17 + 0.72 + 0.696 + 0.365)\\
+& \approx 0.6479
+\end{align*}
+Finally, we can compute the difference in graduation probability:
+\begin{align*}
+Pr(grad=1|hsGPA=3.0, SAT=1200, study=10) - Pr(grad=1|hsGPA=3.0, SAT=1200, study=5) &= 0.7266 - 0.6479\\
+& = 0.0787
+\end{align*}
+This means that the estimated difference in the graduation probability for someone who spent 10 hours per week in study hall and someone who spent 5 hours per week is approximately 0.0787, or 7.87 percentage points.\\~\\
 \end{flushleft}
 \end{document} 
