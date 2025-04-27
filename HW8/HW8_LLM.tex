@@ -144,5 +144,149 @@ Finally, we can compute the difference in graduation probability:
 0.7266 - 0.6479 = 0.0787
 \end{align*}
 This means that the estimated difference in the graduation probability for someone who spent 10 hours per week in study hall and someone who spent 5 hours per week is approximately 0.0787, or 7.87 percentage points.\\~\\
+\subsection*{Problem 3}
+1. Are all parameters identifiable ? What is the usual normalization?\\~\\
+No, in multinomial logit model, the probabilities of the different outcomes are not independent from each other because they are set to sum to 1, meaning that if we know the probabilities of all but one outcome, we can determine the probability of the last outcome. This means that we need to normalize one of the parameters to make the model identifiable. The usual normalization is to set the coefficient of one of the categories to zero.\\~\\
+2. Compute $\mathbb{P}(y=l | x=k)$\\~\\
+For $x=1$, the inactive group:
+\begin{align*}
+\mathbb{P}(y=1 | x=1) &= \frac{150}{450}=\frac{1}{3}\\
+\mathbb{P}(y=2 | x=1) &= \frac{200}{450}=\frac{4}{9}\\
+\mathbb{P}(y=3 | x=1) &= \frac{100}{450}=\frac{2}{9}\\
+\end{align*}
+For $x=2$, the employee group:
+\begin{align*}
+\mathbb{P}(y=1 | x=2) &= \frac{100}{450}=\frac{2}{9}\\
+\mathbb{P}(y=2 | x=2) &= \frac{150}{450}=\frac{1}{3}\\
+\mathbb{P}(y=3 | x=2) &= \frac{200}{450}=\frac{4}{9}\\
+\end{align*}
+For $x=3$, the independent group:
+\begin{align*}
+\mathbb{P}(y=1 | x=3) &= \frac{20}{100}=\frac{1}{5}\\
+\mathbb{P}(y=2 | x=3) &= \frac{50}{100}=\frac{1}{2}\\
+\mathbb{P}(y=3 | x=3) &= \frac{30}{100}=\frac{3}{10}
+\end{align*}
+3. Write the log-likelihood of the sample\\~\\
+In the multinomial logit model:
+\[
+P(y_i = l \mid x_i) = \frac{\exp(V_{il})}{\sum_{m=1}^3 \exp(V_{im})}
+\]
+where \( V_{il} = \sum_{k} b_{lk} x_{ik} \)\\
+Substituting the multinomial logit probability into the log-likelihood:
+\[
+\log \mathcal{L} = \sum_{i=1}^n \log\left( \frac{\exp(V_{iy_i})}{\sum_{m=1}^3 \exp(V_{im})} \right)
+\]
+simplifying gives:
+\[
+\log\left( \frac{\exp(V_{iy_i})}{\sum_{m=1}^3 \exp(V_{im})} \right) = \log(\exp(V_{iy_i})) - \log\left( \sum_{m=1}^3 \exp(V_{im}) \right)
+\]
+further simplifying gives:
+\[
+= V_{iy_i} - \log\left( \sum_{m=1}^3 \exp(V_{im}) \right)
+\]
+Finally, we can write the log-likelihood as:
+\[
+\log \mathcal{L} = \sum_{i=1}^{n} \left( V_{iy_i} - \log\left( \sum_{m=1}^3 \exp(V_{im}) \right) \right)
+\]
+4. Compute the estimator of $\gamma_{lk}=\frac{exp b_{lk}}{exp b_{1k}+exp b_{2k}+exp b_{3k}}$ for $l$ and by maximizing the log-likelihood under the identifying constraint on $\gamma_{1k}+\gamma_{2k}+\gamma_{3k}=1$\\~\\
+Empirically, $\gamma_{lk}$ can be esetimated by the observed proportions of the sample in each labor market status, which is the same as the probabilities we computed in part 2.\\~\\
+\[
+\begin{array}{|c|c|c|c|}
+\hline
+\text{Labor Market Status} & \gamma_{1k} \, (\text{Abstain}) & \gamma_{2k} \, (\text{Mr. John}) & \gamma_{3k} \, (\text{Ms. Does}) \\
+\hline
+\text{Inactive} & \frac{1}{3} & \frac{4}{9} & \frac{2}{9} \\
+\hline
+\text{Employee} & \frac{2}{9} & \frac{1}{3} & \frac{4}{9} \\
+\hline
+\text{Independent} & \frac{1}{5} & \frac{1}{2} & \frac{3}{10} \\
+\hline
+\end{array}
+\]
+5. Note $\hat{\gamma}_k = (\hat{\gamma}_{1k}, \hat{\gamma}_{2k}, \hat{\gamma}_{3k})$. Show that $\hat{\gamma}_1, \hat{\gamma}_2, \hat{\gamma}_3$ are asymptotically independent.\\~\\
+
+Since each $\gamma_k$is estimated using a different and independent subset of the data, the estimators $\hat{\gamma_1},\hat{\gamma_2},\hat{\gamma_3}$ are asymptotically independent by the Central Limit Theorem.\\~\\
+6. Show that an estimator of the asymptotic variance-covariance matrix of $(\hat{\gamma}_{11}, \hat{\gamma}_{21})$ is
+\[
+\frac{1}{450} \begin{bmatrix}
+    \frac{15}{2} & \frac{9}{2} \\
+    \frac{9}{2} & \frac{27}{4}
+\end{bmatrix}^{-1}
+\]
+\\~\\
+We model choices between three outcomes (Abstain, Mr. John, Ms. Does) in the inactive group $k=1$, with probabilities:
+
+\[
+(\gamma_{11}, \gamma_{21}, \gamma_{31}), \quad \text{where } \gamma_{31} = 1 - \gamma_{11} - \gamma_{21}
+\]
+
+and total sample size is $450$ for the inactive group.\\
+The multinomial likelihood is:
+
+\[
+\mathcal{L}(\gamma) = \prod_{l=1}^3 \gamma_{l1}^{n_l}
+\]
+
+Taking logs:
+
+\[
+\log \mathcal{L}(\gamma) = n_1 \log(\gamma_{11}) + n_2 \log(\gamma_{21}) + n_3 \log(1 - \gamma_{11} - \gamma_{21})
+\]
+Partial derivatives of the log-likelihood with respect to $\gamma_{11}$ and $\gamma_{21}$ are:
+
+\[
+\frac{\partial \log \mathcal{L}}{\partial \gamma_{11}} = \frac{n_1}{\gamma_{11}} - \frac{n_3}{1 - \gamma_{11} - \gamma_{21}}
+\]
+
+\[
+\frac{\partial \log \mathcal{L}}{\partial \gamma_{21}} = \frac{n_2}{\gamma_{21}} - \frac{n_3}{1 - \gamma_{11} - \gamma_{21}}
+\]
+Partial second derivatives:
+
+- Second derivative with respect to \(\gamma_{11}\):
+
+\[
+\frac{\partial^2 \log \mathcal{L}}{\partial \gamma_{11}^2} = -\frac{n_1}{\gamma_{11}^2} - \frac{n_3}{(1-\gamma_{11}-\gamma_{21})^2}
+\]
+
+- Second derivative with respect to \(\gamma_{21}\):
+
+\[
+\frac{\partial^2 \log \mathcal{L}}{\partial \gamma_{21}^2} = -\frac{n_2}{\gamma_{21}^2} - \frac{n_3}{(1-\gamma_{11}-\gamma_{21})^2}
+\]
+
+- Cross derivative (mixed partial):
+
+\[
+\frac{\partial^2 \log \mathcal{L}}{\partial \gamma_{11} \partial \gamma_{21}} = -\frac{n_3}{(1-\gamma_{11}-\gamma_{21})^2}
+\]
+The Fisher Information Matrix is the negative expected value of the second derivatives.
+
+Replacing \(n_1, n_2, n_3\) by their expected values (\(n \gamma_{11}\), \(n \gamma_{21}\), \(n \gamma_{31}\)):
+
+Thus, the Information Matrix is:
+
+\[
+\mathcal{I}(\gamma_{11}, \gamma_{21}) = n \times
+\begin{pmatrix}
+\frac{1}{\gamma_{11}} + \frac{1}{\gamma_{31}} & \frac{1}{\gamma_{31}} \\
+\frac{1}{\gamma_{31}} & \frac{1}{\gamma_{21}} + \frac{1}{\gamma_{31}}
+\end{pmatrix}
+=450 \times \begin{pmatrix}
+    \frac{1}{\frac{1}{3}}+\frac{1}{\frac{2}{9}} & \frac{1}{\frac{2}{9}} \\
+    \frac{1}{\frac{2}{9}} & \frac{1}{\frac{4}{9}}+\frac{1}{\frac{2}{9}}
+\end{pmatrix}
+=450 \times \begin{pmatrix}
+    \frac{15}{2} & \frac{9}{2} \\
+    \frac{9}{2} & \frac{27}{4}
+\end{pmatrix}
+\]
+The variance covariance matrix is the inverse of the Fisher Information Matrix:
+\[
+\text{Var}(\hat{\gamma}) = \frac{1}{450} \begin{bmatrix}
+    \frac{15}{2} & \frac{9}{2} \\
+    \frac{9}{2} & \frac{27}{4}
+\end{bmatrix}^{-1}
+\]
 \end{flushleft}
 \end{document} 
